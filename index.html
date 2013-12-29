@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/react/0.8.0/react.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/react/0.8.0/JSXTransformer.js"></script>
+  </head>
+  <style type="text/css">
+    #board {
+        position: relative;
+    }
+
+    .intersection {
+        width: 40px;
+        height: 40px;
+        border-radius: 20px;
+        position: absolute;
+    }
+
+    .intersection:before {
+        border-top: 2px #000 solid;
+        width: 40px;
+        display: block;
+        content: "";
+        top: 18px;
+        position: absolute;
+        z-index: -1;
+    }
+
+    .intersection:after {
+        border-left: 2px #000 solid;
+        height: 40px;
+        display: block;
+        content: "";
+        left: 18px;
+        top: 0px;
+        position: absolute;
+        z-index: -1;
+    }
+
+    .intersection.black, .intersection.white {
+        border: 1px solid #000;
+    }
+
+    .intersection.black {
+        background-color: #444;
+    }
+
+    .intersection.white {
+        background-color: #eee;
+    }
+  </style>
+  <body>
+    <div id="board"></div>
+    <script type="text/jsx" src="go.js">
+    </script>
+  </body>
+</html>
