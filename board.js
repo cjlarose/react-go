@@ -20,7 +20,39 @@ Board.prototype.create_board = function(size) {
 
 Board.prototype.play = function(i, j) {
     console.log("Played at " + i + ", " + j);   
-    this.board[i][j] = this.current_color;
+
+    if (this.board[i][j] != Board.EMPTY)
+        return;
+
+    var color = this.board[i][j] = this.current_color;
+    var captured = [];
+    var neighbors = this.get_adjacent_intersections(i, j);
+
+    var self = this;
+    _.each(neighbors, function(n) {
+        var state = self.board[n[0]][n[1]];
+        if (state != Board.EMPTY && state != color) {
+            var group = self.get_group(n[0], n[1]);
+            console.log(group);
+            if (group["liberties"] == 0)
+                captured.push(group);
+        }
+    });
+
+    // detect suicide
+    if (_.isEmpty(captured) && this.get_group(i, j)["liberties"] == 0) {
+        this.board[i][j] = Board.EMPTY;
+        console.log("suicide");
+        return;
+    }
+
+    var self = this;
+    _.each(captured, function(group) {
+        _.each(group["nodes"], function(node) {
+            self.board[node[0]][node[1]] = Board.EMPTY;
+        });
+    });
+
     $(this).trigger("update");
     this.current_color = this.current_color == Board.BLACK ? Board.WHITE : Board.BLACK;
 };
