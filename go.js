@@ -27,11 +27,19 @@ var BoardIntersection = React.createClass({
 
 var BoardView = React.createClass({
     render: function() {
+        var intersections = [];
+        for (var i = 0; i < this.props.board.size; i++)
+            for (var j = 0; j < this.props.board.size; j++)
+                intersections.push(BoardIntersection({
+                    board: this.props.board,
+                    row: i,
+                    col: j
+                }));
         var style = {
             width: this.props.board.size * GRID_SIZE,
             height: this.props.board.size * GRID_SIZE
         };
-        return React.DOM.div({"style": style}, this.props.board.intersections);
+        return React.DOM.div({"style": style}, intersections);
     }
 });
 
@@ -39,7 +47,8 @@ var Board = function(size) {
     this.current_color = "black";
     this.size = size;
     this.board = this.create_board(size);
-    this.intersections = this.create_intersections(size);
+    this.BLACK = 1;
+    this.WHITE = 2;
 };
 
 Board.prototype.create_board = function(size) {
@@ -50,18 +59,6 @@ Board.prototype.create_board = function(size) {
             m[i][j] = 0;
     }
     return m;
-};
-
-Board.prototype.create_intersections = function(size) {
-    var intersections = [];
-    for (var i = 0; i < size; i++)
-        for (var j = 0; j < size; j++)
-            intersections.push(BoardIntersection({
-                board: this,
-                row: i,
-                col: j
-            }));
-    return intersections;
 };
 
 var board = new Board(13);
