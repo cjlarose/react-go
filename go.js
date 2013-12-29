@@ -1,17 +1,4 @@
 /** @jsx React.DOM */
-
-function create_board(size) {
-    var m = [];
-    for (var i = 0; i < size; i++) {
-        m[i] = [];
-        for (var j = 0; j < size; j++)
-            m[i][j] = 0;
-    }
-    return m;
-}
-
-var board = create_board(13);
-
 var GRID_SIZE = 40;
 
 var BoardIntersection = React.createClass({
@@ -19,8 +6,8 @@ var BoardIntersection = React.createClass({
         return {"color": null};
     },
     handleClick: function() {
-        this.setState({"color": current_color});
-        current_color = current_color == "black" ? "white" : "black";
+        this.setState({"color": this.props.board.current_color});
+        this.props.board.current_color = this.props.board.current_color == "black" ? "white" : "black";
     },
     render: function() {
         var style = {
@@ -38,21 +25,46 @@ var BoardIntersection = React.createClass({
     }
 });
 
-var current_color = "black";
-
 var BoardView = React.createClass({
     render: function() {
-        var intersections = [];
-        for (var i = 0; i < this.props.board.length; i++)
-            for (var j = 0; j < this.props.board[0].length; j++)
-                intersections.push(BoardIntersection({row: i, col: j}));
         var style = {
-            width: this.props.board.length * GRID_SIZE,
-            height: this.props.board.length * GRID_SIZE
+            width: this.props.board.size * GRID_SIZE,
+            height: this.props.board.size * GRID_SIZE
         };
-        return React.DOM.div({"style": style}, intersections);
+        return React.DOM.div({"style": style}, this.props.board.intersections);
     }
 });
+
+var Board = function(size) {
+    this.current_color = "black";
+    this.size = size;
+    this.board = this.create_board(size);
+    this.intersections = this.create_intersections(size);
+};
+
+Board.prototype.create_board = function(size) {
+    var m = [];
+    for (var i = 0; i < size; i++) {
+        m[i] = [];
+        for (var j = 0; j < size; j++)
+            m[i][j] = 0;
+    }
+    return m;
+};
+
+Board.prototype.create_intersections = function(size) {
+    var intersections = [];
+    for (var i = 0; i < size; i++)
+        for (var j = 0; j < size; j++)
+            intersections.push(BoardIntersection({
+                board: this,
+                row: i,
+                col: j
+            }));
+    return intersections;
+};
+
+var board = new Board(13);
 
 React.renderComponent(
     <BoardView board={board} />,
