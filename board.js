@@ -38,13 +38,14 @@ Board.prototype.get_adjacent_intersections = function(i , j) {
     return neighbors;
 };
 
-Board.prototype.count_liberties = function(i, j) {
+Board.prototype.get_group = function(i, j) {
 
     var color = this.board[i][j];
     if (color == Board.EMPTY)
         return null;
 
-    var visited = {};
+    var visited = {}; // for O(1) lookups
+    var visited_list = []; // for returning
     var queue = [[i, j]];
     var count = 0;
 
@@ -54,16 +55,21 @@ Board.prototype.count_liberties = function(i, j) {
             continue;
 
         var neighbors = this.get_adjacent_intersections(node[0], node[1]);
-        for (var n = 0; n < neighbors.length; n++) {
-            var state = this.board[neighbors[n][0]][neighbors[n][1]];
+        var self = this;
+        _.each(neighbors, function(n) {
+            var state = self.board[n[0]][n[1]];
             if (state == Board.EMPTY)
                 count++;
             if (state == color)
-                queue.push([neighbors[n][0], neighbors[n][1]]);
-        }
+                queue.push([n[0], n[1]]);
+        });
 
         visited[node] = true;
+        visited_list.push(node);
     }
 
-    return count;
-};
+    return {
+        "liberties": count,
+        "nodes": visited_list
+    }
+}
