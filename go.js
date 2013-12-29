@@ -2,12 +2,8 @@
 var GRID_SIZE = 40;
 
 var BoardIntersection = React.createClass({
-    getInitialState: function() {
-        return {"color": null};
-    },
     handleClick: function() {
-        this.setState({"color": this.props.board.current_color});
-        this.props.board.current_color = this.props.board.current_color == "black" ? "white" : "black";
+        this.props.board.play(this.props.row, this.props.col);
     },
     render: function() {
         var style = {
@@ -16,8 +12,8 @@ var BoardIntersection = React.createClass({
         };
 
         var classes = "intersection";
-        if (this.state.color)
-            classes += " " + this.state.color;
+        if (this.props.color != 0)
+            classes += " " + (this.props.color == Board.BLACK ? "black" : "white");
 
         return (
             <div onClick={this.handleClick} className={classes} style={style}></div>
@@ -26,30 +22,41 @@ var BoardIntersection = React.createClass({
 });
 
 var BoardView = React.createClass({
+    getInitialState: function() {
+        var self = this;
+        $(this.props.board).on("update", function(e) {
+            console.log(e);
+            self.setState({"board": self.props.board});
+        });
+        return {"board": this.props.board}
+    },
     render: function() {
         var intersections = [];
-        for (var i = 0; i < this.props.board.size; i++)
-            for (var j = 0; j < this.props.board.size; j++)
+        for (var i = 0; i < this.state.board.size; i++)
+            for (var j = 0; j < this.state.board.size; j++)
                 intersections.push(BoardIntersection({
-                    board: this.props.board,
+                    board: this.state.board,
+                    color: this.state.board.board[i][j],
                     row: i,
                     col: j
                 }));
         var style = {
-            width: this.props.board.size * GRID_SIZE,
-            height: this.props.board.size * GRID_SIZE
+            width: this.state.board.size * GRID_SIZE,
+            height: this.state.board.size * GRID_SIZE
         };
         return React.DOM.div({"style": style}, intersections);
     }
 });
 
 var Board = function(size) {
-    this.current_color = "black";
+    this.current_color = Board.BLACK;
     this.size = size;
     this.board = this.create_board(size);
-    this.BLACK = 1;
-    this.WHITE = 2;
 };
+
+Board.EMPTY = 0;
+Board.BLACK = 1;
+Board.WHITE = 2;
 
 Board.prototype.create_board = function(size) {
     var m = [];
@@ -59,6 +66,18 @@ Board.prototype.create_board = function(size) {
             m[i][j] = 0;
     }
     return m;
+};
+
+Board.prototype.play = function(i, j) {
+    console.log("Played at " + i + ", " + j);   
+    this.board[i][j] = this.current_color;
+    $(this).trigger({
+        type: "update",
+        color: this.current_color,
+        i: i,
+        j: j
+    });
+    this.current_color = this.current_color == Board.BLACK ? Board.WHITE : Board.BLACK;
 };
 
 var board = new Board(13);
