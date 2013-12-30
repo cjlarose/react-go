@@ -18,6 +18,10 @@ Board.prototype.create_board = function(size) {
     return m;
 };
 
+Board.prototype.switch_player = Board.prototype.pass = function() {
+    this.current_color = this.current_color == Board.BLACK ? Board.WHITE : Board.BLACK;
+};
+
 Board.prototype.play = function(i, j) {
     console.log("Played at " + i + ", " + j);   
 
@@ -61,7 +65,7 @@ Board.prototype.play = function(i, j) {
     if (atari)
         $(this).trigger("atari");
 
-    this.current_color = this.current_color == Board.BLACK ? Board.WHITE : Board.BLACK;
+    this.switch_player();
 };
 
 Board.prototype.get_adjacent_intersections = function(i , j) {
@@ -110,5 +114,5 @@ Board.prototype.get_group = function(i, j) {
     return {
         "liberties": count,
         "stones": visited_list
-    }
+    };
 }
