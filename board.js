@@ -45,7 +45,7 @@ Board.prototype.play = function(i, j) {
     // detect suicide
     if (_.isEmpty(captured) && this.get_group(i, j)["liberties"] == 0) {
         this.board[i][j] = Board.EMPTY;
-        console.log("suicide");
+        $(this).trigger("suicide");
         return;
     }
 

@@ -54,6 +54,9 @@ var AlertView = React.createClass({
         $(this.props.board).on("atari", function(e) {
             self.setState({"text": "ATARI!"});
         });
+        $(this.props.board).on("suicide", function(e) {
+            self.setState({"text": "SUICIDE!"});
+        });
         $(this.props.board).on("update", function(e) {
             self.setState({"text": null});
         });
