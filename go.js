@@ -70,11 +70,23 @@ var AlertView = React.createClass({
     }
 });
 
+var PassView = React.createClass({
+    handleClick: function(e) {
+        this.props.board.pass();
+    },
+    render: function() {
+        return (
+            <input id="pass-btn" type="button" value="Pass" onClick={this.handleClick} />
+        );
+    }
+});
+
 var board = new Board(19);
 
 React.renderComponent(
     <div>
         <AlertView board={board} />
+        <PassView board={board} />
         <BoardView board={board} />
     </div>,
     document.getElementById('main')
