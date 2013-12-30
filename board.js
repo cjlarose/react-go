@@ -27,6 +27,7 @@ Board.prototype.play = function(i, j) {
     var color = this.board[i][j] = this.current_color;
     var captured = [];
     var neighbors = this.get_adjacent_intersections(i, j);
+    var atari = false;
 
     var self = this;
     _.each(neighbors, function(n) {
@@ -36,6 +37,8 @@ Board.prototype.play = function(i, j) {
             console.log(group);
             if (group["liberties"] == 0)
                 captured.push(group);
+            else if (group["liberties"] == 1)
+                atari = true;
         }
     });
 
@@ -54,6 +57,10 @@ Board.prototype.play = function(i, j) {
     });
 
     $(this).trigger("update");
+
+    if (atari)
+        $(this).trigger("atari");
+
     this.current_color = this.current_color == Board.BLACK ? Board.WHITE : Board.BLACK;
 };
 

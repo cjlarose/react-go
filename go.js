@@ -44,13 +44,35 @@ var BoardView = React.createClass({
             width: this.state.board.size * GRID_SIZE,
             height: this.state.board.size * GRID_SIZE
         };
-        return React.DOM.div({"style": style}, intersections);
+        return React.DOM.div({"style": style, "id": "board"}, intersections);
     }
 });
 
-var board = new Board(13);
+var AlertView = React.createClass({
+    getInitialState: function() {
+        var self = this;
+        $(this.props.board).on("atari", function(e) {
+            self.setState({"text": "ATARI!"});
+        });
+        $(this.props.board).on("update", function(e) {
+            self.setState({"text": null});
+        });
+
+        return {"text": null};
+    },
+    render: function() {
+        return (
+            <div id="alerts">{this.state.text}</div>
+        );
+    }
+});
+
+var board = new Board(19);
 
 React.renderComponent(
-    <BoardView board={board} />,
-    document.getElementById('board')
+    <div>
+        <AlertView board={board} />
+        <BoardView board={board} />
+    </div>,
+    document.getElementById('main')
 );

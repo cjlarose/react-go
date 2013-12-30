@@ -7,6 +7,11 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.2/underscore-min.js"></script>
   </head>
   <style type="text/css">
+    #alerts {
+        height: 40px;
+        line-height: 40px;
+    }
+
     #board {
         position: relative;
     }
@@ -16,6 +21,7 @@
         height: 40px;
         border-radius: 20px;
         position: absolute;
+        box-sizing: border-box;
     }
 
     .intersection:before {
@@ -52,7 +58,8 @@
     }
   </style>
   <body>
-    <div id="board"></div>
+    <div id="main">
+    </div>
     <script type="text/javascript" src="board.js"></script>
     <script type="text/jsx" src="go.js"></script>
   </body>
