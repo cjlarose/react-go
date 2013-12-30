@@ -51,8 +51,8 @@ Board.prototype.play = function(i, j) {
 
     var self = this;
     _.each(captured, function(group) {
-        _.each(group["nodes"], function(node) {
-            self.board[node[0]][node[1]] = Board.EMPTY;
+        _.each(group["stones"], function(stone) {
+            self.board[stone[0]][stone[1]] = Board.EMPTY;
         });
     });
 
@@ -89,11 +89,11 @@ Board.prototype.get_group = function(i, j) {
     var count = 0;
 
     while (queue.length > 0) {
-        var node = queue.pop();
-        if (visited[node])
+        var stone = queue.pop();
+        if (visited[stone])
             continue;
 
-        var neighbors = this.get_adjacent_intersections(node[0], node[1]);
+        var neighbors = this.get_adjacent_intersections(stone[0], stone[1]);
         var self = this;
         _.each(neighbors, function(n) {
             var state = self.board[n[0]][n[1]];
@@ -103,12 +103,12 @@ Board.prototype.get_group = function(i, j) {
                 queue.push([n[0], n[1]]);
         });
 
-        visited[node] = true;
-        visited_list.push(node);
+        visited[stone] = true;
+        visited_list.push(stone);
     }
 
     return {
         "liberties": count,
-        "nodes": visited_list
+        "stones": visited_list
     }
 }
