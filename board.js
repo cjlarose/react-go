@@ -2,6 +2,7 @@ var Board = function(size) {
     this.current_color = Board.BLACK;
     this.size = size;
     this.board = this.create_board(size);
+    this.last_move_passed = false;
 };
 
 Board.EMPTY = 0;
@@ -18,8 +19,19 @@ Board.prototype.create_board = function(size) {
     return m;
 };
 
-Board.prototype.switch_player = Board.prototype.pass = function() {
+Board.prototype.switch_player = function() {
     this.current_color = this.current_color == Board.BLACK ? Board.WHITE : Board.BLACK;
+};
+
+Board.prototype.pass = function() {
+    if (this.last_move_passed)
+        this.end_game();
+    this.last_move_passed = true;
+    this.switch_player();
+};
+
+Board.prototype.end_game = function() {
+    console.log("GAME OVER");
 };
 
 Board.prototype.play = function(i, j) {
@@ -65,6 +77,7 @@ Board.prototype.play = function(i, j) {
     if (atari)
         $(this).trigger("atari");
 
+    this.last_move_passed = false;
     this.switch_player();
 };
 
