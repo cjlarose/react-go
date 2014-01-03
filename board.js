@@ -41,7 +41,7 @@ Board.prototype.play = function(i, j) {
     this.attempted_suicide = this.in_atari = false;
 
     if (this.board[i][j] != Board.EMPTY)
-        return;
+        return false;
 
     var color = this.board[i][j] = this.current_color;
     var captured = [];
@@ -65,7 +65,7 @@ Board.prototype.play = function(i, j) {
     if (_.isEmpty(captured) && this.get_group(i, j)["liberties"] == 0) {
         this.board[i][j] = Board.EMPTY;
         this.attempted_suicide = true;
-        return;
+        return false;
     }
 
     var self = this;
@@ -80,6 +80,7 @@ Board.prototype.play = function(i, j) {
 
     this.last_move_passed = false;
     this.switch_player();
+    return true;
 };
 
 Board.prototype.get_adjacent_intersections = function(i , j) {
