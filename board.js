@@ -3,6 +3,8 @@ var Board = function(size) {
     this.size = size;
     this.board = this.create_board(size);
     this.last_move_passed = false;
+    this.in_atari = false;
+    this.attempted_suicide = false;
 };
 
 Board.EMPTY = 0;
@@ -36,6 +38,7 @@ Board.prototype.end_game = function() {
 
 Board.prototype.play = function(i, j) {
     console.log("Played at " + i + ", " + j);   
+    this.attempted_suicide = this.in_atari = false;
 
     if (this.board[i][j] != Board.EMPTY)
         return;
@@ -61,7 +64,7 @@ Board.prototype.play = function(i, j) {
     // detect suicide
     if (_.isEmpty(captured) && this.get_group(i, j)["liberties"] == 0) {
         this.board[i][j] = Board.EMPTY;
-        $(this).trigger("suicide");
+        this.attempted_suicide = true;
         return;
     }
 
@@ -72,10 +75,8 @@ Board.prototype.play = function(i, j) {
         });
     });
 
-    $(this).trigger("update");
-
     if (atari)
-        $(this).trigger("atari");
+        this.in_atari = true;
 
     this.last_move_passed = false;
     this.switch_player();
