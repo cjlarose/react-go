@@ -59,7 +59,6 @@ var AlertView = React.createClass({
 var PassView = React.createClass({
     handleClick: function(e) {
         this.props.board.pass();
-        this.props.onPass();
     },
     render: function() {
         return (
@@ -81,7 +80,7 @@ var ContainerView = React.createClass({
         return (
             <div>
                 <AlertView board={this.state.board} />
-                <PassView board={this.state.board} onPass={this.onBoardUpdate.bind(this)} />
+                <PassView board={this.state.board} />
                 <BoardView board={this.state.board} onPlay={this.onBoardUpdate.bind(this)} />
             </div>
         )
