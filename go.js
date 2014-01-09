@@ -38,7 +38,7 @@ var BoardView = React.createClass({
             width: this.props.board.size * GRID_SIZE,
             height: this.props.board.size * GRID_SIZE
         };
-        return React.DOM.div({"style": style, "id": "board"}, intersections);
+        return <div style={style} id="board">{intersections}</div>
     }
 });
 
