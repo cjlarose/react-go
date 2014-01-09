@@ -13,7 +13,7 @@ var BoardIntersection = React.createClass({
         };
 
         var classes = "intersection";
-        if (this.props.color != 0)
+        if (this.props.color != Board.EMPTY)
             classes += " " + (this.props.color == Board.BLACK ? "black" : "white");
 
         return (
