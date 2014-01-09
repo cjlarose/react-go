@@ -3,7 +3,8 @@ var GRID_SIZE = 40;
 
 var BoardIntersection = React.createClass({
     handleClick: function() {
-        this.props.board.play(this.props.row, this.props.col);
+        if (this.props.board.play(this.props.row, this.props.col))
+            this.props.onPlay();
     },
     render: function() {
         var style = {
@@ -22,50 +23,35 @@ var BoardIntersection = React.createClass({
 });
 
 var BoardView = React.createClass({
-    getInitialState: function() {
-        var self = this;
-        $(this.props.board).on("update", function(e) {
-            console.log(e);
-            self.setState({"board": self.props.board});
-        });
-        return {"board": this.props.board}
-    },
     render: function() {
         var intersections = [];
-        for (var i = 0; i < this.state.board.size; i++)
-            for (var j = 0; j < this.state.board.size; j++)
+        for (var i = 0; i < this.props.board.size; i++)
+            for (var j = 0; j < this.props.board.size; j++)
                 intersections.push(BoardIntersection({
-                    board: this.state.board,
-                    color: this.state.board.board[i][j],
+                    board: this.props.board,
+                    color: this.props.board.board[i][j],
                     row: i,
-                    col: j
+                    col: j,
+                    onPlay: this.props.onPlay
                 }));
         var style = {
-            width: this.state.board.size * GRID_SIZE,
-            height: this.state.board.size * GRID_SIZE
+            width: this.props.board.size * GRID_SIZE,
+            height: this.props.board.size * GRID_SIZE
         };
         return React.DOM.div({"style": style, "id": "board"}, intersections);
     }
 });
 
 var AlertView = React.createClass({
-    getInitialState: function() {
-        var self = this;
-        $(this.props.board).on("atari", function(e) {
-            self.setState({"text": "ATARI!"});
-        });
-        $(this.props.board).on("suicide", function(e) {
-            self.setState({"text": "SUICIDE!"});
-        });
-        $(this.props.board).on("update", function(e) {
-            self.setState({"text": null});
-        });
-
-        return {"text": null};
-    },
     render: function() {
+        var text = "";
+        if (this.props.board.in_atari)
+            text = "ATARI!";
+        else if (this.props.board.attempted_suicide)
+            text = "SUICIDE!";
+
         return (
-            <div id="alerts">{this.state.text}</div>
+            <div id="alerts">{text}</div>
         );
     }
 });
@@ -83,11 +69,25 @@ var PassView = React.createClass({
 
 var board = new Board(19);
 
+var ContainerView = React.createClass({
+    getInitialState: function() {
+        return {'board': this.props.board};
+    },
+    onBoardUpdate: function() {
+        this.setState({"board": this.props.board});
+    },
+    render: function() {
+        return (
+            <div>
+                <AlertView board={this.state.board} />
+                <PassView board={this.state.board} />
+                <BoardView board={this.state.board} onPlay={this.onBoardUpdate.bind(this)} />
+            </div>
+        )
+    }
+});
+
 React.renderComponent(
-    <div>
-        <AlertView board={board} />
-        <PassView board={board} />
-        <BoardView board={board} />
-    </div>,
+    <ContainerView board={board} />,
     document.getElementById('main')
 );
