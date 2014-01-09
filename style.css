@@ -1,0 +1,52 @@
+#alerts {
+    height: 40px;
+    line-height: 40px;
+}
+
+#pass-btn {
+}
+
+#board {
+    position: relative;
+}
+
+.intersection {
+    width: 40px;
+    height: 40px;
+    border-radius: 20px;
+    position: absolute;
+    box-sizing: border-box;
+}
+
+.intersection:before {
+    border-top: 2px #000 solid;
+    width: 40px;
+    display: block;
+    content: "";
+    top: 18px;
+    position: absolute;
+    z-index: -1;
+}
+
+.intersection:after {
+    border-left: 2px #000 solid;
+    height: 40px;
+    display: block;
+    content: "";
+    left: 18px;
+    top: 0px;
+    position: absolute;
+    z-index: -1;
+}
+
+.intersection.black, .intersection.white {
+    border: 1px solid #000;
+}
+
+.intersection.black {
+    background-color: #444;
+}
+
+.intersection.white {
+    background-color: #eee;
+}
