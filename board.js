@@ -28,7 +28,8 @@ Board.prototype.create_board = function(size) {
  * Switches the current player
  */
 Board.prototype.switch_player = function() {
-    this.current_color = this.current_color == Board.BLACK ? Board.WHITE : Board.BLACK;
+    this.current_color = 
+        this.current_color == Board.BLACK ? Board.WHITE : Board.BLACK;
 };
 
 /*
