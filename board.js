@@ -53,7 +53,6 @@ Board.prototype.end_game = function() {
  * Attempt to place a stone at (i,j). Returns true iff the move was legal
  */
 Board.prototype.play = function(i, j) {
-    console.log("Played at " + i + ", " + j);   
     this.attempted_suicide = this.in_atari = false;
 
     if (this.board[i][j] != Board.EMPTY)
@@ -69,7 +68,6 @@ Board.prototype.play = function(i, j) {
         var state = self.board[n[0]][n[1]];
         if (state != Board.EMPTY && state != color) {
             var group = self.get_group(n[0], n[1]);
-            console.log(group);
             if (group["liberties"] == 0)
                 captured.push(group);
             else if (group["liberties"] == 1)
