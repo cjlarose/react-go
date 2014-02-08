@@ -12,6 +12,7 @@ from the root directory and visit `localhost:8000` from your browser.
 * Show whose turn it is (medium)
 * [Ko][5] detection (medium)
 * Score the game (hard)
+* Make Board immutable (hard)
 
 ## Contributors
 * Chris LaRose
