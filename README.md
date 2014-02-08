@@ -13,6 +13,9 @@ from the root directory and visit `localhost:8000` from your browser.
 * [Ko][5] detection (medium)
 * Score the game (hard)
 
+## Contributors
+* Chris LaRose
+
 [1]: http://en.wikipedia.org/wiki/Go_(game)
 [2]: http://facebook.github.io/react/
 [3]: http://cjlarose.com/react-go/ 
