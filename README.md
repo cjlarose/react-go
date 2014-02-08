@@ -7,9 +7,9 @@ server. The easiest way to do that is to execute `python -m SimpleHTTPServer`
 from the root directory and visit `localhost:8000` from your browser.
 
 ## Things you might want to improve
-* Add basic rules to page. (easy)
+* Add basic rules to page (easy)
 * Improve general appearance (easy)
-* Show who's turn it is (easier)
+* Show whose turn it is (medium)
 * [Ko][5] detection (medium)
 * Score the game (hard)
 
